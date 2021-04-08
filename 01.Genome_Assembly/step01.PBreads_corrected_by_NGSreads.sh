@@ -1,0 +1,1 @@
+perl -Mforks /app/proovread-2.14/bin/proovread  --long-reads all.hq.isoforms.01.fa  --short-reads Lib_270bp_1.fq  --short-reads Lib_270bp_2.fq  --short-reads Lib_500bp_1.fq  --short-reads Lib_500bp_2.fq  --prefix proovread.07.out  --threads 20 --coverage 50 --mode auto --sr-qv-offset=33
