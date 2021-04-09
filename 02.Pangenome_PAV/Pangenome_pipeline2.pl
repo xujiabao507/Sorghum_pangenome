@@ -52,7 +52,7 @@ my $sam1=0;
 &creatdir("$shell_dir/S01.index_DB");
 print "$shell_dir/S01.index_DB\n";
 foreach my $sam (sort keys %genomes) {
-	next if($sam ne "S273" && $sam ne "S353");
+	#next if($sam ne "S273" && $sam ne "S353");
 	$sam1=$sam;
 	&creatdir("$db_dir/$sam");
 	open my $SH01a,">$shell_dir/S01.index_DB/step01.$sam.index.sh" or die $!;
@@ -95,7 +95,7 @@ if(scalar(@fapre)==0){
 
 #### ±È¶Ô
 foreach my $sam (sort keys %genomes) {
-	next if($sam ne "S273" && $sam ne "S353");
+	#next if($sam ne "S273" && $sam ne "S353");
 	&creatdir("$shell_dir/S02.nucmer/$sam");
 	print "$shell_dir/S02.nucmer/$sam\n";
 	&creatdir("$Mummer_dir/$sam");
@@ -113,7 +113,7 @@ foreach my $sam (sort keys %genomes) {
 }
 #### ¹ýÂË
 foreach my $sam (sort keys %genomes) {
-	next if($sam ne "S273" && $sam ne "S353");
+	#next if($sam ne "S273" && $sam ne "S353");
 	&creatdir("$shell_dir/S03.filter/$sam");
 	print "$shell_dir/S03.filter/$sam\n";
 	my @fa=glob "$db_dir/$sam/*fasta";
@@ -133,7 +133,7 @@ foreach my $sam (sort keys %genomes) {
 #### merge coords
 print "$shell_dir/S04.Merge_coord\n";
 foreach my $sam (sort keys %genomes) {
-	next if($sam ne "S273" && $sam ne "S353");
+	#next if($sam ne "S273" && $sam ne "S353");
 	&creatdir("$shell_dir/S04.Merge_coord");
 	&creatdir("$Mummerfilt_dir/$sam");
 	open my $SH04,">$shell_dir/S04.Merge_coord/step04.$sam.merge.sh" or die $!;
@@ -153,14 +153,14 @@ foreach my $sam (sort keys %genomes) {
 	close $SH04;
 }
 ######## SV inversion + translocation
-
-foreach my $sam (sort keys %genomes) {
-	open my $SH051,">$shell_dir/S04.Merge_coord/step05.$sam.Inversion_Transloaction.sh" or die $!;
-	print $SH051 "perl $bincf{bindir}/script/step07.1.inversion_translocation.pl $Mummerfilt_dir/$sam/$sam.filt.pre.coords.select $Mummerfilt_dir/$sam/$sam.SV\n";
-	print $SH051 "perl $bincf{bindir}/script/step07.1.1.inversion_translocation_filt.pl $Mummerfilt_dir/$sam/$sam.SV.TransLocation\n";
-	print $SH051 "perl $bincf{bindir}/script/step07.1.1.inversion_translocation_filt.pl $Mummerfilt_dir/$sam/$sam.SV.Inversion\n";
-	close $SH051;
-}
+#
+#foreach my $sam (sort keys %genomes) {
+#	open my $SH051,">$shell_dir/S04.Merge_coord/step05.$sam.Inversion_Transloaction.sh" or die $!;
+#	print $SH051 "perl $bincf{bindir}/script/step07.1.inversion_translocation.pl $Mummerfilt_dir/$sam/$sam.filt.pre.coords.select $Mummerfilt_dir/$sam/$sam.SV\n";
+#	print $SH051 "perl $bincf{bindir}/script/step07.1.1.inversion_translocation_filt.pl $Mummerfilt_dir/$sam/$sam.SV.TransLocation\n";
+#	print $SH051 "perl $bincf{bindir}/script/step07.1.1.inversion_translocation_filt.pl $Mummerfilt_dir/$sam/$sam.SV.Inversion\n";
+#	close $SH051;
+#}
 
 exit;
 
@@ -201,33 +201,33 @@ foreach my $sam (sort keys %genomes) {
 }
 
 
-foreach my $sam (sort keys %genomes) {
-	if(exists $sequel{$sam}){
-		open my $SH05,">$shell_dir/S05.BWA/step05.$sam.bwa.Sequel.sh" or die $!;
-		my $bam_pre_sequel_ref="$bwa_dir/$sam/$sam.sequel.ref.pre.bam";
-		my $bam_sort_sequel_ref="$bwa_dir/$sam/$sam.sequel.sort.bam";
-		print $SH05 "$bincf{bwa}/bwa mem -t 8 -k17 -W40 -r10 -A1 -B1 -O1 -E1 -L0 $refgenome $sequel{$sam} |$bincf{samtools}/samtools view -Sb  -o $bam_pre_sequel_ref\n";
-		print $SH05 "$bincf{samtools}/samtools sort -m 4000M  $bam_pre_sequel_ref -o $bam_sort_sequel_ref\n";
-		print $SH05 "perl $bincf{bindir}/script/len.pl $sequel{$sam} >$bwa_dir/$sam/$sam.sequel.len\n";
-		print $SH05 "perl $bincf{bindir}/script/match2.pl $bwa_dir/$sam/$sam.sequel.len  $bam_sort_sequel_ref $bam_sort_sequel_ref.split\n";
-		
-		my $self_genome="$db_dir/$sam.genome.fa";
-		my $bam_pre_sequel_self="$bwa_dir/$sam/$sam.sequel.self.pre.bam";
-		my $bam_sort_sequel_self="$bwa_dir/$sam/$sam.sequel.self.sort.bam";
-		my $depthfile="$bam_sort_sequel_self.split.map.depth.gz";
-		my $read_cov_file="$bam_sort_sequel_self.split.map.read_cov.gz";
-		my $read_cov_reg_file="$bam_sort_sequel_self.split.map.read_cov_Reg.gz";
-		print $SH05 "$bincf{bwa}/bwa mem -t 8 -k17 -W40 -r10 -A1 -B1 -O1 -E1 -L0 $self_genome  $sequel{$sam}  |$bincf{samtools}/samtools view -Sb  -o  $bam_pre_sequel_self\n";
-		print $SH05 "$bincf{samtools}/samtools sort -m 4000M $bam_pre_sequel_self  -o $bam_sort_sequel_self\n";
-		print $SH05 "perl $bincf{bindir}/script/match2.pl $bwa_dir/$sam/$sam.sequel.len  $bam_sort_sequel_self  $bam_sort_sequel_self.split\n";
-		print $SH05 "$bincf{samtools}/samtools depth $bam_sort_sequel_self.split.map.bam |gzip >$depthfile\n";
-		print $SH05 "$bincf{samtools}/samtools mpileup -O --output-QNAME -a -V -f $self_genome $bam_sort_sequel_self.split.map.bam |gzip >$read_cov_file\n";
-		print $SH05 "perl $bincf{bindir}/script/step05.2.read_cov.pl $read_cov_file $read_cov_reg_file\n";
-		print $SH05 "perl $bincf{bindir}/script/step07.2.inversion_translocation_cov.pl $read_cov_reg_file $Mummerfilt_dir/$sam/$sam.SV.Inversion $Mummerfilt_dir/$sam/$sam.SV.TransLocation  $Mummerfilt_dir/$sam/$sam.SV.read_support\n";
-		print $SH05 "perl $bincf{bindir}/script/step07.3.inversion_translocation_stat.pl $Mummerfilt_dir/$sam/$sam.SV.read_support $Mummerfilt_dir/$sam/$sam.SV.read_support.stat\n";
-		close $SH05;
-	}
-}
+#foreach my $sam (sort keys %genomes) {
+#	if(exists $sequel{$sam}){
+#		open my $SH05,">$shell_dir/S05.BWA/step05.$sam.bwa.Sequel.sh" or die $!;
+#		my $bam_pre_sequel_ref="$bwa_dir/$sam/$sam.sequel.ref.pre.bam";
+#		my $bam_sort_sequel_ref="$bwa_dir/$sam/$sam.sequel.sort.bam";
+#		print $SH05 "$bincf{bwa}/bwa mem -t 8 -k17 -W40 -r10 -A1 -B1 -O1 -E1 -L0 $refgenome $sequel{$sam} |$bincf{samtools}/samtools view -Sb  -o $bam_pre_sequel_ref\n";
+#		print $SH05 "$bincf{samtools}/samtools sort -m 4000M  $bam_pre_sequel_ref -o $bam_sort_sequel_ref\n";
+#		print $SH05 "perl $bincf{bindir}/script/len.pl $sequel{$sam} >$bwa_dir/$sam/$sam.sequel.len\n";
+#		print $SH05 "perl $bincf{bindir}/script/match2.pl $bwa_dir/$sam/$sam.sequel.len  $bam_sort_sequel_ref $bam_sort_sequel_ref.split\n";
+#		
+#		my $self_genome="$db_dir/$sam.genome.fa";
+#		my $bam_pre_sequel_self="$bwa_dir/$sam/$sam.sequel.self.pre.bam";
+#		my $bam_sort_sequel_self="$bwa_dir/$sam/$sam.sequel.self.sort.bam";
+#		my $depthfile="$bam_sort_sequel_self.split.map.depth.gz";
+#		my $read_cov_file="$bam_sort_sequel_self.split.map.read_cov.gz";
+#		my $read_cov_reg_file="$bam_sort_sequel_self.split.map.read_cov_Reg.gz";
+#		print $SH05 "$bincf{bwa}/bwa mem -t 8 -k17 -W40 -r10 -A1 -B1 -O1 -E1 -L0 $self_genome  $sequel{$sam}  |$bincf{samtools}/samtools view -Sb  -o  $bam_pre_sequel_self\n";
+#		print $SH05 "$bincf{samtools}/samtools sort -m 4000M $bam_pre_sequel_self  -o $bam_sort_sequel_self\n";
+#		print $SH05 "perl $bincf{bindir}/script/match2.pl $bwa_dir/$sam/$sam.sequel.len  $bam_sort_sequel_self  $bam_sort_sequel_self.split\n";
+#		print $SH05 "$bincf{samtools}/samtools depth $bam_sort_sequel_self.split.map.bam |gzip >$depthfile\n";
+#		print $SH05 "$bincf{samtools}/samtools mpileup -O --output-QNAME -a -V -f $self_genome $bam_sort_sequel_self.split.map.bam |gzip >$read_cov_file\n";
+#		print $SH05 "perl $bincf{bindir}/script/step05.2.read_cov.pl $read_cov_file $read_cov_reg_file\n";
+#		print $SH05 "perl $bincf{bindir}/script/step07.2.inversion_translocation_cov.pl $read_cov_reg_file $Mummerfilt_dir/$sam/$sam.SV.Inversion $Mummerfilt_dir/$sam/$sam.SV.TransLocation  $Mummerfilt_dir/$sam/$sam.SV.read_support\n";
+#		print $SH05 "perl $bincf{bindir}/script/step07.3.inversion_translocation_stat.pl $Mummerfilt_dir/$sam/$sam.SV.read_support $Mummerfilt_dir/$sam/$sam.SV.read_support.stat\n";
+#		close $SH05;
+#	}
+#}
 
 ############################ samtools VCF
 #print "$shell_dir/S06.VCF\n";
@@ -269,75 +269,75 @@ foreach my $sam (sort keys %genomes) {
 ################################ GATK 
 
 
-foreach my $sam (sort keys %genomes) {
-	&creatdir("$shell_dir/S07.GATK/$sam");
-	print "$shell_dir/S07.GATK/$sam\n";
-	open my $SH07,">$shell_dir/S07.GATK/$sam/step05.$sam.self.sh" or die $!;
-	my $self_genome="$db_dir/$sam.genome.fa";
+#foreach my $sam (sort keys %genomes) {
+#	&creatdir("$shell_dir/S07.GATK/$sam");
+#	print "$shell_dir/S07.GATK/$sam\n";
+#	open my $SH07,">$shell_dir/S07.GATK/$sam/step05.$sam.self.sh" or die $!;
+#	my $self_genome="$db_dir/$sam.genome.fa";
+##	my $bam_rmdup_self="$bwa_dir/$sam/$sam.self.rmdup.bam";
+#	my $bam_rmdup_self="$bwa_dir/$sam/$sam.self.hq.bam";
+#	my $gvcf_pri="$gatk_dir/$sam/$sam.pri.gvcf.gz";
+#	my $vcf_pri="$gatk_dir/$sam/$sam.pri.vcf.gz";
+#	my $indel_pri="$gatk_dir/$sam/$sam.indel.pri.vcf.gz";
+#	my $intervals="$gatk_dir/$sam/$sam.indel.intervals";
+#	my $bam_realign="$gatk_dir/$sam/$sam.realignment.bam";
+#	my $gvcf_realignment="$gatk_dir/$sam/$sam.realign.gvcf.gz";
+#	my $vcf_realignment="$gatk_dir/$sam/$sam.realign.vcf.gz";
+#	my $snp_raw="$gatk_dir/$sam/$sam.snp_raw.vcf.gz";
+#	my $snp_filt="$gatk_dir/$sam/$sam.snp_filt.vcf.gz";
+#	my $snp_result="$gatk_dir/$sam/$sam.snp_result.vcf.gz";
+#	my $indel_raw="$gatk_dir/$sam/$sam.indel_raw.vcf.gz";
+#	my $indel_filt="$gatk_dir/$sam/$sam.indel_filt.vcf.gz";
+#	my $indel_result="$gatk_dir/$sam/$sam.indel_result.vcf.gz";
+#	&creatdir("$gatk_dir/$sam/temp/");
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T HaplotypeCaller -R $self_genome -I $bam_rmdup_self --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 -o $gvcf_pri -nct 16 \n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T GenotypeGVCFs -R $self_genome --variant $gvcf_pri -o $vcf_pri -stand_call_conf 30 -allSites\n";
+#	print $SH07  "time /hwfssz4/BC_PUB/Software/03.Soft_ALL/jdk1.8.0_202/bin/java -XX:-UseGCOverheadLimit -Xmx4G -Djava.io.tmpdir=$gatk_dir/$sam/temp/  -jar /hwfssz4/BC_PUB/Software/03.Soft_ALL/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar  HaplotypeCaller -R  $self_genome -I $bam_rmdup_self --sample-ploidy 2 --standard-min-confidence-threshold-for-calling 30 --output-mode EMIT_ALL_SITES --native-pair-hmm-threads 16 -ERC GVCF -O $gvcf_pri\n";
+#	print $SH07 "time /hwfssz4/BC_PUB/Software/03.Soft_ALL/jdk1.8.0_202/bin/java -XX:-UseGCOverheadLimit -Xmx4G -Djava.io.tmpdir=$gatk_dir/$sam/temp/  -jar /hwfssz4/BC_PUB/Software/03.Soft_ALL/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar  GenotypeGVCFs -R $self_genome -V  $gvcf_pri -O $vcf_pri\n";
+#	print $SH07 "perl  /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/S07.GATK/stat/gatk-snp_het_pri.pl $sam\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType INDEL --excludeNonVariants  -R $self_genome -V $vcf_pri -o $indel_pri \n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T RealignerTargetCreator -R $self_genome -I $bam_rmdup_self -known $indel_pri -o $intervals \n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T IndelRealigner  -R $self_genome -I $bam_rmdup_self -known $indel_pri -targetIntervals $intervals -o $bam_realign\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T HaplotypeCaller -R $self_genome -I $bam_realign --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 -o $gvcf_realignment -nct 2 \n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T GenotypeGVCFs -R $self_genome --variant $gvcf_realignment -o $vcf_realignment -stand_call_conf 30 -allSites\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType SNP --excludeNonVariants  -R $self_genome -V $vcf_realignment -o $snp_raw\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T VariantFiltration --filterExpression  \"QUAL>30.0 && QD > 20.0 && FS < 20.000 && MQ > 40.0 \" --filterName \"NEXTOK\" -R $self_genome -V $snp_raw -o $snp_filt\n";
+#	#print $SH07 "zgrep NEXTOK $snp_filt |gzip >$snp_result\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType INDEL --excludeNonVariants  -R $self_genome -V $vcf_realignment -o $indel_raw\n";
+#	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T VariantFiltration --filterExpression  \"QUAL>30.0 && QD > 20.0 && FS < 20.000 && MQ > 40.0 \" --filterName \"NEXTOK\" -R $self_genome -V $indel_raw -o $indel_filt\n";
+#	#print $SH07 "zgrep NEXTOK $indel_filt |gzip >$indel_result\n";
+#	#print $SH07 "perl $bincf{bindir}/script/step06.2.snp_indel_stat.pl $outdir $sam $outdir/S07.GATK/$sam/$sam.small_var_stat.xls\n";
+#	close $SH07;
+#}
+
+
+
+############################################   S08 CNV
+##my $cnv_dir="";
+#foreach my $sam (sort keys %genomes) {
+#	#&creatdir("$shell_dir/S08.CNV/$sam");
+#	print "$shell_dir/S08.CNV/\n";
+#	&creatdir("$cnv_dir/$sam");
+#	my $bam_rmdup_ref="$bwa_dir/$sam/$sam.ref.rmdup.bam";
+#	my $depth_ref="$cnv_dir/$sam/$sam.ref.depth.gz";
+#	my $genedepth_ref="$cnv_dir/$sam/$sam.gene.depth";
+#	my $genedepth_ref_detail="$cnv_dir/$sam/$sam.gene.depth.detail.gz";
+#	my $ntdepth_stat_ref="$cnv_dir/$sam/$sam.nt.depth.stat";
+#	my $genedepth_stat_ref="$cnv_dir/$sam/$sam.gene.depth.stat";
 #	my $bam_rmdup_self="$bwa_dir/$sam/$sam.self.rmdup.bam";
-	my $bam_rmdup_self="$bwa_dir/$sam/$sam.self.hq.bam";
-	my $gvcf_pri="$gatk_dir/$sam/$sam.pri.gvcf.gz";
-	my $vcf_pri="$gatk_dir/$sam/$sam.pri.vcf.gz";
-	my $indel_pri="$gatk_dir/$sam/$sam.indel.pri.vcf.gz";
-	my $intervals="$gatk_dir/$sam/$sam.indel.intervals";
-	my $bam_realign="$gatk_dir/$sam/$sam.realignment.bam";
-	my $gvcf_realignment="$gatk_dir/$sam/$sam.realign.gvcf.gz";
-	my $vcf_realignment="$gatk_dir/$sam/$sam.realign.vcf.gz";
-	my $snp_raw="$gatk_dir/$sam/$sam.snp_raw.vcf.gz";
-	my $snp_filt="$gatk_dir/$sam/$sam.snp_filt.vcf.gz";
-	my $snp_result="$gatk_dir/$sam/$sam.snp_result.vcf.gz";
-	my $indel_raw="$gatk_dir/$sam/$sam.indel_raw.vcf.gz";
-	my $indel_filt="$gatk_dir/$sam/$sam.indel_filt.vcf.gz";
-	my $indel_result="$gatk_dir/$sam/$sam.indel_result.vcf.gz";
-	&creatdir("$gatk_dir/$sam/temp/");
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T HaplotypeCaller -R $self_genome -I $bam_rmdup_self --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 -o $gvcf_pri -nct 16 \n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T GenotypeGVCFs -R $self_genome --variant $gvcf_pri -o $vcf_pri -stand_call_conf 30 -allSites\n";
-	print $SH07  "time /hwfssz4/BC_PUB/Software/03.Soft_ALL/jdk1.8.0_202/bin/java -XX:-UseGCOverheadLimit -Xmx4G -Djava.io.tmpdir=$gatk_dir/$sam/temp/  -jar /hwfssz4/BC_PUB/Software/03.Soft_ALL/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar  HaplotypeCaller -R  $self_genome -I $bam_rmdup_self --sample-ploidy 2 --standard-min-confidence-threshold-for-calling 30 --output-mode EMIT_ALL_SITES --native-pair-hmm-threads 16 -ERC GVCF -O $gvcf_pri\n";
-	print $SH07 "time /hwfssz4/BC_PUB/Software/03.Soft_ALL/jdk1.8.0_202/bin/java -XX:-UseGCOverheadLimit -Xmx4G -Djava.io.tmpdir=$gatk_dir/$sam/temp/  -jar /hwfssz4/BC_PUB/Software/03.Soft_ALL/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar  GenotypeGVCFs -R $self_genome -V  $gvcf_pri -O $vcf_pri\n";
-	print $SH07 "perl  /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/S07.GATK/stat/gatk-snp_het_pri.pl $sam\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType INDEL --excludeNonVariants  -R $self_genome -V $vcf_pri -o $indel_pri \n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T RealignerTargetCreator -R $self_genome -I $bam_rmdup_self -known $indel_pri -o $intervals \n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T IndelRealigner  -R $self_genome -I $bam_rmdup_self -known $indel_pri -targetIntervals $intervals -o $bam_realign\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T HaplotypeCaller -R $self_genome -I $bam_realign --emitRefConfidence GVCF --variant_index_type LINEAR --variant_index_parameter 128000 -o $gvcf_realignment -nct 2 \n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T GenotypeGVCFs -R $self_genome --variant $gvcf_realignment -o $vcf_realignment -stand_call_conf 30 -allSites\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType SNP --excludeNonVariants  -R $self_genome -V $vcf_realignment -o $snp_raw\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T VariantFiltration --filterExpression  \"QUAL>30.0 && QD > 20.0 && FS < 20.000 && MQ > 40.0 \" --filterName \"NEXTOK\" -R $self_genome -V $snp_raw -o $snp_filt\n";
-	#print $SH07 "zgrep NEXTOK $snp_filt |gzip >$snp_result\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T SelectVariants  -selectType INDEL --excludeNonVariants  -R $self_genome -V $vcf_realignment -o $indel_raw\n";
-	#print $SH07 "$bincf{java} -Xmx4g -Djava.io.tmpdir=$gatk_dir/$sam/temp/ -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit -jar $bincf{gatk}/GenomeAnalysisTK.jar -T VariantFiltration --filterExpression  \"QUAL>30.0 && QD > 20.0 && FS < 20.000 && MQ > 40.0 \" --filterName \"NEXTOK\" -R $self_genome -V $indel_raw -o $indel_filt\n";
-	#print $SH07 "zgrep NEXTOK $indel_filt |gzip >$indel_result\n";
-	#print $SH07 "perl $bincf{bindir}/script/step06.2.snp_indel_stat.pl $outdir $sam $outdir/S07.GATK/$sam/$sam.small_var_stat.xls\n";
-	close $SH07;
-}
-
-
-
-###########################################   S08 CNV
-#my $cnv_dir="";
-foreach my $sam (sort keys %genomes) {
-	#&creatdir("$shell_dir/S08.CNV/$sam");
-	print "$shell_dir/S08.CNV/\n";
-	&creatdir("$cnv_dir/$sam");
-	my $bam_rmdup_ref="$bwa_dir/$sam/$sam.ref.rmdup.bam";
-	my $depth_ref="$cnv_dir/$sam/$sam.ref.depth.gz";
-	my $genedepth_ref="$cnv_dir/$sam/$sam.gene.depth";
-	my $genedepth_ref_detail="$cnv_dir/$sam/$sam.gene.depth.detail.gz";
-	my $ntdepth_stat_ref="$cnv_dir/$sam/$sam.nt.depth.stat";
-	my $genedepth_stat_ref="$cnv_dir/$sam/$sam.gene.depth.stat";
-	my $bam_rmdup_self="$bwa_dir/$sam/$sam.self.rmdup.bam";
-	my $depth_self="$cnv_dir/$sam/$sam.self.depth.gz";
-	open my $SH081,">$shell_dir/S08.CNV/step081.$sam.depth.ref.sh" or die $!;
-	print $SH081 "#$bincf{samtools}/samtools depth -a $bam_rmdup_ref |gzip >$depth_ref \n";
-	print $SH081 "perl $bincf{bindir}/script/step11.gene_depth.pl $project{refgff}  $depth_ref $genedepth_ref\n";
-	print $SH081 "perl $bincf{bindir}/script/step11.gene_depth_detail.pl $project{refgff}  $depth_ref $genedepth_ref_detail\n";
-	print $SH081 "perl $bincf{bindir}/script/step12.stat.pl $depth_ref $ntdepth_stat_ref\n";
-	print $SH081 "perl $bincf{bindir}/script/step12.gene_stat.pl  $genedepth_ref_detail  $genedepth_stat_ref\n";
-	print $SH081 "perl $bincf{bindir}/script/step13.gene_p.pl $genedepth_ref_detail $genedepth_ref\n";
-	close $SH081;
-	#open my $SH082,">$shell_dir/S08.CNV/$sam/step082.depth.self.sh" or die $!;
-	#print $SH082 "$bincf{samtools}/samtools depth -Q 20 -a $bam_rmdup_self |gzip >$depth_self \n";
-	#close $SH082;
-}
+#	my $depth_self="$cnv_dir/$sam/$sam.self.depth.gz";
+#	open my $SH081,">$shell_dir/S08.CNV/step081.$sam.depth.ref.sh" or die $!;
+#	print $SH081 "#$bincf{samtools}/samtools depth -a $bam_rmdup_ref |gzip >$depth_ref \n";
+#	print $SH081 "perl $bincf{bindir}/script/step11.gene_depth.pl $project{refgff}  $depth_ref $genedepth_ref\n";
+#	print $SH081 "perl $bincf{bindir}/script/step11.gene_depth_detail.pl $project{refgff}  $depth_ref $genedepth_ref_detail\n";
+#	print $SH081 "perl $bincf{bindir}/script/step12.stat.pl $depth_ref $ntdepth_stat_ref\n";
+#	print $SH081 "perl $bincf{bindir}/script/step12.gene_stat.pl  $genedepth_ref_detail  $genedepth_stat_ref\n";
+#	print $SH081 "perl $bincf{bindir}/script/step13.gene_p.pl $genedepth_ref_detail $genedepth_ref\n";
+#	close $SH081;
+#	#open my $SH082,">$shell_dir/S08.CNV/$sam/step082.depth.self.sh" or die $!;
+#	#print $SH082 "$bincf{samtools}/samtools depth -Q 20 -a $bam_rmdup_self |gzip >$depth_self \n";
+#	#close $SH082;
+#}
 
 ###########################################   S09 PAV1
 #foreach my $sam (sort keys %genomes) {
@@ -434,28 +434,28 @@ foreach my $sam (sort keys %genomes) {
 	close $SH15;
 	open my $SH16,">$shell_dir/S10.PAV/$sam/step16.$sam.map2unmap.sh" or die $!;
 	print "$shell_dir/S10.PAV/$sam/step16.$sam.map2unmap.sh\n";
-	print $SH16 "#perl $bincf{bindir}/script/step22.filt2.pl $fq $sortbam $sort_mapbam $pav_dir2/$sam/$sam.map.reads.gz  $pav_dir2/$sam/$sam.unmap.reads\n";
-	print $SH16 "#$bincf{samtools}/samtools index $sort_mapbam\n";
-	print $SH16 "#perl $bincf{bindir}/script/step09.map_regoin_merge.pl $pav_dir2/$sam/$sam.map.reads.gz  $pav_dir2/$sam/$sam.mapregoin.merge.xls\n";
-	print $SH16 "#perl $bincf{bindir}/script/step10.map2unmap.pl  $outdir/S02.DB/$sam.genome.fa.fai $pav_dir2/$sam/$sam.mapregoin.merge.xls $pav_dir2/$sam/$sam.unmapregoin.xls\n";
+	print $SH16 perl $bincf{bindir}/script/step22.filt2.pl $fq $sortbam $sort_mapbam $pav_dir2/$sam/$sam.map.reads.gz  $pav_dir2/$sam/$sam.unmap.reads\n";
+	print $SH16 "$bincf{samtools}/samtools index $sort_mapbam\n";
+	print $SH16 "perl $bincf{bindir}/script/step09.map_regoin_merge.pl $pav_dir2/$sam/$sam.map.reads.gz  $pav_dir2/$sam/$sam.mapregoin.merge.xls\n";
+	print $SH16 "perl $bincf{bindir}/script/step10.map2unmap.pl  $outdir/S02.DB/$sam.genome.fa.fai $pav_dir2/$sam/$sam.mapregoin.merge.xls $pav_dir2/$sam/$sam.unmapregoin.xls\n";
 	print $SH16 "perl $bincf{bindir}/script/step11.unmap_unmapread.pl  $pav_dir2/$sam/$sam.unmapregoin.xls $pav_dir2/$sam/$sam.unmap.reads $pav_dir2/$sam/step11.$sam.unmap_reads_merge.xls\n";
 	close $SH16;
 	open my $SH17,">$shell_dir/S10.PAV/$sam/step17.$sam.ref_depth.sh" or die $!;
 	print "$shell_dir/S10.PAV/$sam/step17.$sam.ref_depth.sh\n";
-	print $SH17 "#$bincf{samtools}/samtools depth -a $sort_mapbam >$pav_dir2/$sam/step01.$sam.depth\n";
-	print $SH17 "#perl $bincf{bindir}/script/cov_depth.pl $pav_dir2/$sam/step01.$sam.depth $pav_dir2/$sam/step02.$sam.cov \n";
-	print $SH17 "#perl $bincf{bindir}/script/step12.window_fa_N.pl $fq $pav_dir2/$sam/step02.$sam.winddow_fa.list \n";
-	print $SH17 "#perl $bincf{bindir}/script/step13.window_edge.pl $pav_dir2/$sam/step02.$sam.winddow_fa.list $pav_dir2/$sam/step03.$sam.gap.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/step14.maploc.pl $pav_dir2/$sam/$sam.map.reads.gz $pav_dir2/$sam/step03.$sam.gap.xls $pav_dir2/$sam/step04.$sam.maplocation.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/step15.cluster_inter.pl $pav_dir2/$sam/step04.$sam.maplocation.xls $pav_dir2/$sam/step05.$sam.gap.xls  $pav_dir2/$sam/step05.$sam.map.contig.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/map.pl $pav_dir2/$sam/step05.$sam.gap.xls  $pav_dir2/$sam/step05.$sam.gap_real.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/step16.ref_specific.pl $pav_dir2/$sam/step05.$sam.gap_real.xls $pav_dir2/$sam/step02.$sam.cov  $pav_dir2/$sam/step07.$sam.unmap.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/cov_depth_merge.pl $pav_dir2/$sam/step07.$sam.unmap.xls >$pav_dir2/$sam/step08.$sam.unmapmerge.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/step22.filt2.pl $ref_fq $sort_refbam $sort_refmapbam $pav_dir2/$sam/$sam.refmap.reads.gz $pav_dir2/$sam/$sam.ref2unmap.reads\n";
+	print $SH17 "$bincf{samtools}/samtools depth -a $sort_mapbam >$pav_dir2/$sam/step01.$sam.depth\n";
+	print $SH17 "perl $bincf{bindir}/script/cov_depth.pl $pav_dir2/$sam/step01.$sam.depth $pav_dir2/$sam/step02.$sam.cov \n";
+	print $SH17 "perl $bincf{bindir}/script/step12.window_fa_N.pl $fq $pav_dir2/$sam/step02.$sam.winddow_fa.list \n";
+	print $SH17 "perl $bincf{bindir}/script/step13.window_edge.pl $pav_dir2/$sam/step02.$sam.winddow_fa.list $pav_dir2/$sam/step03.$sam.gap.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/step14.maploc.pl $pav_dir2/$sam/$sam.map.reads.gz $pav_dir2/$sam/step03.$sam.gap.xls $pav_dir2/$sam/step04.$sam.maplocation.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/step15.cluster_inter.pl $pav_dir2/$sam/step04.$sam.maplocation.xls $pav_dir2/$sam/step05.$sam.gap.xls  $pav_dir2/$sam/step05.$sam.map.contig.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/map.pl $pav_dir2/$sam/step05.$sam.gap.xls  $pav_dir2/$sam/step05.$sam.gap_real.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/step16.ref_specific.pl $pav_dir2/$sam/step05.$sam.gap_real.xls $pav_dir2/$sam/step02.$sam.cov  $pav_dir2/$sam/step07.$sam.unmap.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/cov_depth_merge.pl $pav_dir2/$sam/step07.$sam.unmap.xls >$pav_dir2/$sam/step08.$sam.unmapmerge.xls\n";
+	print $SH17 "perl $bincf{bindir}/script/step22.filt2.pl $ref_fq $sort_refbam $sort_refmapbam $pav_dir2/$sam/$sam.refmap.reads.gz $pav_dir2/$sam/$sam.ref2unmap.reads\n";
 	print $SH17 "perl $bincf{bindir}/script/step11.unmap_unmapread.pl $pav_dir2/$sam/step08.$sam.unmapmerge.xls $pav_dir2/$sam/$sam.ref2unmap.reads $pav_dir2/$sam/step08.$sam.unmapmerge_lowmap.xls\n";
-	print $SH17 "#perl $bincf{bindir}/script/step22.ref_map_bam_filt.pl  $bwa_dir/$sam/$sam.ref.rmdup.bam  $pav_dir2/$sam/$sam.ref.lib500.bam \n";
-	print $SH17 "#$bincf{samtools}/samtools  index $pav_dir2/$sam/$sam.ref.lib500.bam \n";
-	print $SH17 "#$bincf{samtools}/samtools  depth $pav_dir2/$sam/$sam.ref.lib500.bam >$pav_dir2/$sam/step09.$sam.reflib500.depth \n";
+	print $SH17 "perl $bincf{bindir}/script/step22.ref_map_bam_filt.pl  $bwa_dir/$sam/$sam.ref.rmdup.bam  $pav_dir2/$sam/$sam.ref.lib500.bam \n";
+	print $SH17 "$bincf{samtools}/samtools  index $pav_dir2/$sam/$sam.ref.lib500.bam \n";
+	print $SH17 "$bincf{samtools}/samtools  depth $pav_dir2/$sam/$sam.ref.lib500.bam >$pav_dir2/$sam/step09.$sam.reflib500.depth \n";
 	print $SH17 "perl $bincf{bindir}/script/step23.pav_NGS_deletion.pl $pav_dir2/$sam/step08.$sam.unmapmerge_lowmap.xls $pav_dir2/$sam/step09.$sam.reflib500.depth $pav_dir2/$sam/step10.$sam.pav_cov.xls\n";
 	print $SH17 "perl $bincf{bindir}/script/step23.pav_seq.pl $pav_dir2/$sam/step10.$sam.pav_cov.xls  $pav_dir2/$sam/step11.$sam.pav_result.xls \n";
  	close $SH17;
