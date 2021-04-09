@@ -1,0 +1,13 @@
+S353	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S13.DBG2OLC/S353_proovread_Q33/dbbase/S353.proovread.trimmed.NoN.fa
+S273	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORipaD/S13.DBG2OLC/S273/S273_proovread_Q33/dbbase/S273.proovread.trimmed.format.fa2
+369-2	/zfssz6/notpanic/zfssz4-import/zfssz4/BC_COM_P11/F16FTSAPHT1005/01.proovread-self/369-1-new/s0.proovread/369-1.proovread.out.trimmed.fa
+AusTRCF317961	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/AusTRCF317961/AusTRCF317961.trimmed.fa
+BLGh09-1	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/BLGh09-1/BLGh09-1_proovread.trimmed.fa
+IS12661-1	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/IS12261/IS12661-1_proovread.trimmed.fa
+IS19953-2	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/IS19953/IS19953-2_proovread.trimmed.fa
+IS3614-2	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/IS3614/IS3614-2_proovread.trimmed.fa
+IS8525	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/IS8525/IS8525_proovread.trimmed.fa
+PI525695	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/PI525695/PI525695_proovread.trimmed.fa
+PI532566	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/PI532566/PI532566_proovread.trimmed.fa
+PI536008	/hwfssz4/BC_COM_P4/F16FTSAPHT1005/01.proovread-self/analysis/PI536008/PI536008_proovread.trimmed.fa
+R931945-2-2	/zfssz6/notpanic/zfssz4-import/zfssz4/BC_COM_P11/F16FTSAPHT1005/01.proovread-self/R931945-2-2-new/s0.proovread/proovread.out.trimmed.fa

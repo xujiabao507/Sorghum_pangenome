@@ -1,0 +1,16 @@
+mummer = /zfssz5/BC_PUB/Software/03.Soft_ALL/mummer-4.0.0/bin
+bindir = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/bin
+bwa = /zfssz5/BC_PUB/Software/03.Soft_ALL/bwa-0.7.17
+samtools = /zfssz5/BC_PUB/Software/03.Soft_ALL/samtools-1.7
+bcftools = /zfssz5/BC_PUB/Software/03.Soft_ALL/bcftools-1.5
+vcftools = 
+picard = /hwfssz4/BC_PUB/pipeline/DNA/DNA_ReSequencing_WGRS/Hiseq_WGRS_population_2017a/bin/picard
+java = /zfssz5/BC_PUB/Software/02.Soft_curren/jdk1.8.0/bin/java
+bgzip = tabix-0.2.6/bgzip
+tabix = tabix-0.2.6/tabix
+gatk = /zfssz5/BC_PUB/Software/03.Soft_ALL/GenomeAnalysisTK-3.7
+blast = /hwfssz4/BC_PUB/Software/03.Soft_ALL/blast-2.2.26/bin
+
+
+
+

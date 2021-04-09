@@ -1,0 +1,27 @@
+S369-1_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/S369.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/S369.pg_format.fa
+AusTRCF317961_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/AusTRCF317961.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/AusTRCF317961.pg_format.fa
+BLGh09-1_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/BLGh09-1.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/BLGh09-1.pg_format.fa
+IS12661-1_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/IS12661-1.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/IS12661-1.pg_format.fa
+IS19953-2_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/IS19953-2.map.ok.fa 	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/IS19953-2.pg_format.fa
+PI532566_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/PI532566.hic_format.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/PI532566.pg_format.fa
+PI536008_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/PI536008.hic_format.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/PI536008.pg_format.fa
+IS3614_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/IS3614.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/IS3614.pg_format.fa
+IS8525_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/IS8525.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/IS8525.pg_format.fa
+PI525695_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/PI525695.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/PI525695.pg_format.fa
+R931945-2-2_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/R931945-2-2.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/R931945.pg_format.fa
+SbicolorRio_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/Rio_468.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/Rio_468.pg_format2.fa
+Tx430_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/Tx430.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/Tx430.pg_format2.fa
+S353_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/S353.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/S353.pg_format.fa
+S273_genome1 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S31.Annotation/01.Gene/db/S273.map.ok.fa	/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/genome_format_map/S273.pg_format.fa
+ref = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/Sbicolor_454_v3.0.1.fa
+OutDir =/hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome
+refgff = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S22.Pangenome/DB/Sbicolor_454_v3.1.1.gene.gff3
+refgff2 = /hwfssz4/BC_COM_P5/F17FTSNCKF1543/SORcsaD/S32.hw6/S31.Annotation/01.Gene_GFF/Sbicolor_454_v3.gene.gff
+
+
+
+
+
+
+
+
